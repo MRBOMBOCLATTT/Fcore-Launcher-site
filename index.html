@@ -350,6 +350,32 @@ const TEXT = {
   }
 };
 
+const EN_LOG = {
+  '1.7.5': [
+    'Game Presets: save and apply ready-made launch settings for different builds',
+    'Server Presets: separate launch settings for servers, applied automatically when you join the chosen server',
+    'Gaming Activity: game session history, time per build, weekly activity chart and most used mods',
+    'Download Manager: a single download queue with progress, speed, estimated time, cancel, retry and local history',
+    'Build Snapshots 2.0: snapshots of mods, resource packs, shaders, configs and game settings, verified restore and support for the old snapshot format',
+    'Mod Compatibility Watcher: checks for compatible mod updates and notifies about new versions, auto-check can be turned off'
+  ],
+  '1.7.0': [
+    'Build system: separate mods, resource packs, shaders, worlds and settings for each build, .mrpack import',
+    'Mods, resource packs and shaders are combined on the Content tab',
+    'New "What\'s new" window in the launcher style',
+    'Improved build check: find missing dependencies, download them and enable them right from the check window',
+    'Reworked build check interface',
+    'Added a choice to install mods with or without dependencies'
+  ],
+  '1.6.0': [
+    'New interface, more pleasant to use',
+    'Rebranding: PFC Launcher is now FCore Launcher',
+    'Theme gradient option',
+    'Fixed: the Accounts tab was very slow',
+    'Optimized several things, the launcher works a bit faster'
+  ]
+};
+
 const FALLBACK_LOG = [
   { version: '1.7.5', date: '2026-11-14', ru: ['Game Presets: сохранение и применение настроек игры', 'Server Presets: отдельные настройки запуска для серверов', 'Gaming Activity: история игровых сессий'], en: ['Game Presets: save and apply game settings', 'Server Presets: separate launch settings for servers', 'Gaming Activity: game session history'] },
   { version: '1.7.0', date: '2026-10-18', ru: ['Система сборок: отдельные моды, ресурспаки и шейдеры для каждой сборки', 'Новое окно «Что нового» в лаунчере'], en: ['Build system: separate mods, resource packs and shaders for each build', 'New "What\'s new" window in the launcher'] }
@@ -404,7 +430,8 @@ function renderChangelog(){
       head.append(badge);
     }
     const ul = document.createElement('ul');
-    entry.lines.forEach(line => {
+    const shown = lang === 'en' ? (entry.linesEn || EN_LOG[entry.version] || entry.lines) : entry.lines;
+    shown.forEach(line => {
       const li = document.createElement('li');
       li.textContent = line;
       ul.append(li);
@@ -456,11 +483,16 @@ loadReleases().then(data => {
   latestVersion = newest.tag_name.startsWith('v') ? newest.tag_name : `v${newest.tag_name}`;
   const exe = (newest.assets || []).find(a => /\.exe$/i.test(a.name));
   if (exe) $$('.dl-link').forEach(a => { a.href = exe.browser_download_url; });
-  const withText = published.map(r => ({
-    version: r.tag_name.replace(/^v/i, ''),
-    date: (r.published_at || '').slice(0, 10),
-    lines: (r.body || '').split('\n').map(cleanLine).filter(l => l && !/:$/.test(l) && !/^(FCore|PFC) Launcher\s+v?[\d.]+$/i.test(l)).slice(0, 8)
-  })).filter(r => r.lines.length);
+  const toLines = text => text.split('\n').map(cleanLine).filter(l => l && !/:$/.test(l) && !/^(FCore|PFC) Launcher\s+v?[\d.]+$/i.test(l)).slice(0, 8);
+  const withText = published.map(r => {
+    const parts = (r.body || '').split(/^\s*-{3,}\s*$/m);
+    return {
+      version: r.tag_name.replace(/^v/i, ''),
+      date: (r.published_at || '').slice(0, 10),
+      lines: toLines(parts[0]),
+      linesEn: parts[1] ? toLines(parts[1]) : null
+    };
+  }).filter(r => r.lines.length);
   if (withText.length) releases = withText;
   $('#heroMeta').textContent = TEXT[lang].meta(latestVersion);
   renderChangelog();
