@@ -7,8 +7,8 @@
 <meta name="description" content="FCore Launcher — открытый лаунчер Minecraft: отдельные сборки, моды с Modrinth и CurseForge, проверка перед запуском, снимки и диагностика.">
 <meta property="og:title" content="FCore Launcher">
 <meta property="og:description" content="Minecraft-лаунчер со сборками, модами и диагностикой.">
-<meta property="og:image" content="assets/shots/home-en.jpg">
-<link rel="icon" type="image/png" href="assets/favicon.png">
+<meta property="og:image" content="home-en.jpg">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -162,7 +162,7 @@ html.party body{animation:hue 3s linear infinite}
 <header class="site-nav">
   <div class="nav-row">
     <div class="brand">
-      <img src="assets/icon.png" alt="">
+      <img src="icon.png" alt="">
       <div class="brand-text">FCore Launcher</div>
     </div>
     <nav class="nav-links">
@@ -197,7 +197,7 @@ html.party body{animation:hue 3s linear infinite}
       <div class="hero-visual">
         <div class="app-window">
           <div class="app-titlebar"><div class="tf"></div><div class="tf"></div><div class="tf"></div><span class="tt">FCore Launcher</span></div>
-          <img class="shot lang-shot" data-shot="home" src="assets/shots/home-en.jpg" alt="FCore Launcher">
+          <img class="shot lang-shot" data-shot="home" src="home-en.jpg" alt="FCore Launcher">
         </div>
       </div>
     </div>
@@ -224,7 +224,7 @@ html.party body{animation:hue 3s linear infinite}
     </div>
     <div class="app-window">
       <div class="app-titlebar"><div class="tf"></div><div class="tf"></div><div class="tf"></div><span class="tt">FCore Launcher</span></div>
-      <img id="stage" class="shot" src="assets/shots/home-en.jpg" alt="">
+      <img id="stage" class="shot" src="home-en.jpg" alt="">
     </div>
   </section>
 
@@ -262,7 +262,7 @@ html.party body{animation:hue 3s linear infinite}
 <footer>
   <div class="wrap footer-row">
     <div class="brand">
-      <img src="assets/icon.png" alt="">
+      <img src="icon.png" alt="">
       <div class="brand-text">FCore Launcher</div>
     </div>
     <div class="fl">
@@ -372,9 +372,9 @@ function detectLang(){
 }
 
 function setStage(){
-  const src = `assets/shots/${currentShot}-${lang}.jpg`;
+  const src = `${currentShot}-${lang}.jpg`;
   $('#stage').src = src;
-  $$('.lang-shot').forEach(img => { img.src = `assets/shots/${img.dataset.shot}-${lang}.jpg`; });
+  $$('.lang-shot').forEach(img => { img.src = `${img.dataset.shot}-${lang}.jpg`; });
   $$('.shot-tab').forEach(t => t.classList.toggle('on', t.dataset.shot === currentShot));
 }
 
